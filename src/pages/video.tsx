@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import Hls from "hls.js";
 
+// const VIDEO_SRC = "https://cdn-s01.mywallpaper-4k-image.net/stream/c/clevatess-majuu-no-ou-to-akago-to-shikabane-no-yuusha-dublado/12.mp4/index.m3u8";
 const VIDEO_SRC = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
-
 const VolumeIcon = ({ size = 24, muted = false }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
         <path d="M3 9v6h4l5 5V4L7 9H3z" fill="#fff"/>
@@ -208,7 +208,7 @@ const VideoPlayer: React.FC = () => {
             style={{
                 width: "100vw",
                 height: "100vh",
-                objectFit: "cover",
+                // objectFit: "cover",
                 background: "#000",
             }}
             />
@@ -219,22 +219,23 @@ const VideoPlayer: React.FC = () => {
                 bottom: 0,
                 left: 0,
                 right: 0,
-                background: "rgba(20,20,20,0.7)",
-                padding: isFullscreen ? "24px 0 18px 0" : "16px 0 10px 0",
+                // background: "rgba(20,20,20,0.7)",
+                padding: isFullscreen ? "24px 12px 18px 12x" : "16px 12px 10px 12px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "stretch",
                 justifyContent: "flex-end",
                 gap: isFullscreen ? 18 : 10,
-                boxShadow: "0 -2px 16px #000a",
+                // boxShadow: "0 -2px 16px #000a",
                 transition: "padding 0.2s",
                 }}
             >
                 {/* Progress Bar logo acima dos botões */}
                 <div
+                className="px-72"
                 style={{
                     width: "100%",
-                    height: isFullscreen ? 14 : 8,
+                    height: isFullscreen ? 14 : 9,
                     background: "#222",
                     borderRadius: 6,
                     cursor: "pointer",
@@ -282,8 +283,8 @@ const VideoPlayer: React.FC = () => {
                     left: `calc(${(currentTime / duration) * 100}% - ${(isFullscreen ? 12 : 8) / 2}px)`,
                     top: "50%",
                     transform: "translateY(-50%)",
-                    width: isFullscreen ? 12 : 8,
-                    height: isFullscreen ? 12 : 8,
+                    width: isFullscreen ? 19 : 15,
+                    height: isFullscreen ? 19 : 15,
                     background: "#fff",
                     border: "2px solid #e74c3c",
                     borderRadius: "50%",
@@ -359,76 +360,88 @@ const VideoPlayer: React.FC = () => {
                     )}
                     </div>
                     {/* Volume Button + Bar */}
-                    <div
-                    style={{ position: "relative", display: "flex", alignItems: "center" }}
-                    onMouseEnter={() => {
-                        setShowVolumeBar(true);
-                        setHoveredButton("volume");
-                        setHoverVolumeBar(true);
-                    }}
-                    onMouseLeave={() => {
-                        setShowVolumeBar(false);
-                        setHoveredButton(null);
-                        setHoverVolumeBar(false);
-                    }}
-                    >
-                    <button
-                        style={{
-                        ...buttonStyle,
-                        background: hoveredButton === "volume" ? "#222" : "none",
-                        }}
-                        onClick={() => setShowVolumeBar((v) => !v)}
-                    >
-                        <VolumeIcon size={isFullscreen ? 26 : 18} muted={volume === 0} />
-                    </button>
-                    {(hoveredButton === "volume" || hoverVolumeBar) && (
-                        <span style={tooltipStyle}>Volume</span>
-                    )}
-                    {/* Volume Bar animada */}
-                    <div
-                        style={{
-                        position: "absolute",
-                        left: "50%",
-                        bottom: "120%",
-                        transform: "translateX(-50%)",
-                        width: isFullscreen ? 120 : 80,
-                        height: isFullscreen ? 8 : 6,
-                        background: "#222",
-                        borderRadius: 4,
-                        boxShadow: "0 2px 8px #0008",
-                        display: showVolumeBar || hoverVolumeBar ? "block" : "none",
-                        transition: "opacity 0.2s",
-                        opacity: showVolumeBar || hoverVolumeBar ? 1 : 0,
-                        zIndex: 30,
-                        cursor: "pointer",
-                        }}
-                        onClick={handleVolumeBar}
-                        onMouseEnter={() => setHoverVolumeBar(true)}
-                        onMouseLeave={() => setHoverVolumeBar(false)}
-                    >
-                        {/* Volume preenchido */}
-                        <div
-                        style={{
-                            height: "100%",
-                            width: `${volume * 100}%`,
-                            background: "#fff",
-                            borderRadius: 4,
-                            transition: "width 0.2s",
-                        }}
-                        />
-                    </div>
-                    </div>
-                    {/* Time Display */}
-                    <span style={{
-                    color: "#fff",
-                    fontSize: isFullscreen ? "18px" : "15px",
-                    minWidth: 70,
-                    fontFamily: "monospace",
-                    letterSpacing: 1,
-                    marginLeft: 10,
-                    }}>
-                    {formatTime(currentTime)} / {formatTime(duration)}
-                    </span>
+<div
+  style={{
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    transition: "padding-right 0.3s ease",
+    paddingRight: showVolumeBar || hoverVolumeBar ? "6px" : "5px", // menos espaço
+  }}
+  onMouseEnter={() => {
+    setShowVolumeBar(true);
+    setHoveredButton("volume");
+    setHoverVolumeBar(true);
+  }}
+  onMouseLeave={() => {
+    setShowVolumeBar(false);
+    setHoveredButton(null);
+    setHoverVolumeBar(false);
+  }}
+>
+  {/* Botão de Volume */}
+  <button
+    style={{
+      ...buttonStyle,
+      background: hoveredButton === "volume" ? "#222" : "none",
+      zIndex: 2,
+    }}
+    onClick={() => setShowVolumeBar((v) => !v)}
+  >
+    <VolumeIcon size={isFullscreen ? 26 : 18} muted={volume === 0} />
+  </button>
+
+  {/* Tooltip */}
+  {(hoveredButton === "volume" || hoverVolumeBar) && (
+    <span style={tooltipStyle}>Volume</span>
+  )}
+
+  {/* Barra de Volume estilo YouTube */}
+  <div
+    style={{
+      marginLeft: "8px", // colada ao botão
+      width: showVolumeBar || hoverVolumeBar ? (isFullscreen ? 120 : 80) : 0,
+      height: isFullscreen ? 8 : 6,
+      background: "#222",
+      borderRadius: 4,
+      boxShadow: "0 2px 8px #0008",
+      opacity: showVolumeBar || hoverVolumeBar ? 1 : 0,
+      transition: "width 0.3s ease, opacity 0.3s ease",
+      overflow: "hidden",
+      cursor: "pointer",
+      pointerEvents: showVolumeBar || hoverVolumeBar ? "auto" : "none",
+    }}
+    onClick={handleVolumeBar}
+    onMouseEnter={() => setHoverVolumeBar(true)}
+    onMouseLeave={() => setHoverVolumeBar(false)}
+  >
+    <div
+      style={{
+        height: "100%",
+        width: `${volume * 100}%`,
+        background: "#fff",
+        borderRadius: 4,
+        transition: "width 0.2s",
+      }}
+    />
+  </div>
+</div>
+
+{/* Tempo */}
+  <span
+    style={{
+      color: "#fff",
+      fontSize: isFullscreen ? "18px" : "15px",
+      minWidth: 70,
+      fontFamily: "monospace",
+      letterSpacing: 1,
+    //   marginLeft: showVolumeBar || hoverVolumeBar ? 12 : 10,
+      marginLeft: 0,
+      transition: "margin-left 0.3s ease",
+    }}
+  >
+    {formatTime(currentTime)} / {formatTime(duration)}
+  </span>
                 </div>
                 {/* Lado direito: Fullscreen */}
                 <div
