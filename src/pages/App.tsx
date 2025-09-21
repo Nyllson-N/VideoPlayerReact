@@ -1,4 +1,4 @@
-import { Navigation } from "./Componentes/Navigation";
+import { Navigation } from "../Componentes/Navigation";
 
 const list = [
   {
@@ -16,7 +16,7 @@ const list = [
   {
     name: "One Piece",
     img: "https://cdn.animefire.plus/animes/one-piece.jpg",
-    year: 1999,
+    yea7r: 1999,
     type: "Legendado"
   },
   {
@@ -314,10 +314,37 @@ export function Home() {
   return (
     <>
       <Navigation />
+      <style>
+        {`
+          .anime-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+          }
+          @media (max-width: 900px) {
+            .anime-grid {
+              grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+              gap: 16px;
+            }
+          }
+          @media (max-width: 600px) {
+            .anime-grid {
+              grid-template-columns: 1fr;
+              gap: 12px;
+            }
+            .anime-card img {
+              height: 140px;
+            }
+            .anime-card {
+              border-radius: 8px;
+            }
+          }
+        `}
+      </style>
       <div style={{
         background: "#f9f9f9",
         minHeight: "100vh",
-        padding: "0 24px"
+        padding: "0 8px"
       }}>
         <div style={{
           maxWidth: 1400,
@@ -331,13 +358,9 @@ export function Home() {
           }}>
             Recomendados
           </h2>
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-            gap: 24
-          }}>
+          <div className="anime-grid">
             {list.map((anime) => (
-              <div key={anime.name} style={{
+              <div key={anime.name} className="anime-card" style={{
                 background: "#fff",
                 borderRadius: 12,
                 boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
